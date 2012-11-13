@@ -1,0 +1,130 @@
+/* SEND SMS PLUGIN
+        -------------------------------------------------------------------------------*/
+
+.clearfix:before, .clearfix:after { 
+    content: "\0020"; 
+    display: block; 
+    height: 0; 
+    overflow: hidden; 
+}
+
+.clearfix:after { 
+    clear: both; 
+}  
+
+.clearfix { 
+    zoom: 1; 
+}
+
+.fmmlPluginContainer {
+    border: 1px solid #d6d6d6 !important;
+    background-color: #fafafa !important;
+    padding: 15px !important;
+    color: #333 !important;
+    display: inline-block !important;
+    -webkit-border-radius: 2px!important;
+    -moz-border-radius: 2px!important;
+    border-radius: 2px!important;
+}
+
+.fmmlPluginContainer ul {
+    margin: 0px !important;
+    padding: 0px !important;
+    list-style: none !important;
+}
+
+.fmmlPluginContainer ul li {
+    float: left !important;
+    width: auto !important;
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+.fmmlPluginContainer ul li:first-child {
+    margin-right: 5px !important;
+}
+
+.fmmlNumberInput {
+    font: normal 16px/20px Arial, Helvetica, Tahoma, Verdana, sans-serif !important;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.20) inset !important;
+    border: 1px solid #d6d6d6 !important;
+    padding: 8px 10px !important;
+    color: #222 !important;
+    -webkit-transition: all .3s ease !important;
+    -moz-transition: all .3s ease !important;
+    -o-transition: all .3s ease !important;
+    -ms-transition: all .3s ease !important;
+    background-color: #fff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    width: 175px !important;
+    display: inline-block !important;
+}
+
+.fmmlNumberInput:hover {
+    border: 1px solid #077dc3 !important;
+    -webkit-transition: all .3s ease !important;
+    -moz-transition: all .3s ease !important;
+    -o-transition: all .3s ease !important;
+    -ms-transition: all .3s ease !important; 
+}
+
+
+
+.fmmlNumberInput:focus {
+    box-shadow: 0 0 5px 0 rgba(0, 113, 215, 0.85) !important;
+    border: 1px solid #077dc3 !important;
+}
+
+.fmmlSendButton {
+    font: bold 22px Arial, Helvetica, Tahoma, Verdana, sans-serif !important;
+    padding: 7px 10px 8px 10px !important;
+    color: #fff !important;
+    background-color: #4286f4 !important;
+    border: none !important;
+    font-size: 18px !important;
+    font-weight: normal !important;
+    letter-spacing: -1px !important;
+    text-align: center !important;
+    text-shadow: 0 1px 0 #2152A3 !important;
+    text-transform: none !important;
+    -webkit-border-radius: 3px !important;
+    -moz-border-radius: 3px !important;
+    border-radius: 3px !important;
+    -webkit-transition: all .3s ease !important;
+    -moz-transition: all .3s ease !important;
+    -o-transition: all .3s ease !important;
+    -ms-transition: all .3s ease !important; 
+}
+
+.fmmlSendButton:hover {
+    background-color: #2874f2 !important;
+    -webkit-transition: all .3s ease !important;
+    -moz-transition: all .3s ease !important;
+    -o-transition: all .3s ease !important;
+    -ms-transition: all .3s ease !important; 
+}
+
+.watermark {
+    color: #999 !important;
+}
+
+.red {
+    color: #dc1f23 !important;
+}
+
+.green {
+    color: #6da82e !important;
+}
+
+.fmmlStatus {
+    font: bold 12px Arial, Helvetica, Tahoma, Verdana, sans-serif;
+    text-shadow: 0 1px #fff;
+    margin-top: 5px;
+    display: block;
+    color: #333;
+    padding: 0px !important;
+    border: none !important;
+    background: none !important;
+}
