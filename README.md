@@ -18,7 +18,7 @@ Using the SendSMS plugin is really simple. Edit your desidered WordPress page, t
 	</div>
 ```
 
-For detaild list of all supported arguments please explore the wpOneApiSendSMS.php plugin source code file.
+For detailed list of all supported arguments please explore the wpOneApiSendSMS.php plugin source code file.
 
 ## Notes
 
