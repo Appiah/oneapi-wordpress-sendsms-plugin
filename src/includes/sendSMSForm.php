@@ -1,90 +1,6 @@
 <?php
-/*
-Plugin Name: Parseco sendSMS
-Plugin URI: http://www.parseco.com/plugins/wp
-Description: Sent SMS
-Version: 1.0
-Author: Roberto Belušić, 
-Author URI: 
-License: GPL2
-*/
-/*  Copyright YEAR  PLUGIN_AUTHOR_NAME  (email : PLUGIN AUTHOR EMAIL)
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License, version 2, as 
-    published by the Free Software Foundation.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
-?><?php
-    function cb_parseco_send_sms_menu() {
-        if (!current_user_can( 'manage_options'))  {
-            wp_die(__( 'You do not have sufficient permissions to access this page.' ));
-	}
-	echo '<div class="wrap">';
-	echo '<p>Options</p>';
-	echo '</div>';
-    }
-    
-    function parseco_send_sms_menu() {
-        add_options_page( 'Parseco sendSMS', 'Authentication', 'manage_options', 'parseco_send_sms', 'b_parseco_send_sms_menu' );
-    }
-    
-    function parseco_send_sms_init() {
-        $defcss = plugins_url( 'css/default.css', __FILE__ );
-        wp_register_script(
-            'parseco-js', 
-            'http://www.parseco.com/api/parseco.js'
-        );
-        wp_enqueue_script('parseco-js');  
-        
-        wp_register_style(
-            'parseco-css',                 
-            'http://www.parseco.com/api/parseco.css'
-        );
-        wp_enqueue_style('parseco-css');  
-        
-        wp_register_style(
-            'plugin-css',                 
-            $defcss
-        );
-        wp_enqueue_style('plugin-css');  
-        
-    }
-    
-    function parseco_send_sms($atts,$content=null) {
-        extract(shortcode_atts(
-            array(
-                'description' => 'Mobile Number',
-                'done_message' => 'Done.',
-                'auth_error_message' => 'Error',
-                'message_visible' => '1',
-                'message_editable' => '1',
-                'delivery_status_visible' => '1',
-                'auth_username' => '',
-                'auth_password' => '',
-                'sender_address' => '',
-                'sender_name' => '',
-                'address' => '',
-                'message' => ''                
-            ), 
-            $atts
-        ));
-
-
-        $showMessage = $message_visible == '0' ? 'none' : 'block';
-        $messageExtensions = $message_editable == '0' ? '' : 'MlExAttributeEdit';
-        $showDeliveryStatus = $delivery_status_visible ==  '0' ? 'none' : 'block';
-        $proxyFile = plugins_url( 'proxy/cdproxy.php', __FILE__ );
-
-        $template = <<<EOF
+$template = <<<EOF
 
 <div class="fmmlPluginContainer">
     <div style="display: none;" 
@@ -117,12 +33,11 @@ License: GPL2
                                    data-fmml-observer="Event" 
                                    data-fmml-event-async="true" 
                                    data-fmml-event-type="onSendSMS" 
-                                   data-fmml-run-on-success="send-sms-query-ds"                        
+                                   data-fmml-run-on-success="send-sms-query-ds"                      
                                    />
                         </li>
                     </ul>            
-                    <div style="display: none;">
-
+                    <div style="display: $showMessage;">
                         <dl>
                             <dt style="display: $showMessage;" class="fmmlValueAnnotation mbottom10">Message:</dt>
                             <dd style="display: $showMessage;">
@@ -133,8 +48,9 @@ License: GPL2
                                           data-fmml-attr-default-value="$message"
                                           ></textarea>
                             </dd>
-                        </dl>                
-
+                        </dl>
+                    </div>
+                    <div style="display: none;">
                         <input class="fmmlValueInput" type="text" disabled="disabled" 
                                data-fmml-observer="Attribute" 
                                data-fmml-attr-name="senderAddress" 
@@ -162,29 +78,18 @@ License: GPL2
 
 </div>
 <script>
-        // watermsrk
-        $("#sendtoaddress").watermark("$description");
+    // watermsrk
+    $("#sendtoaddress").watermark("$description");
 
-	// Set proxy script URL
-	OA.setProxy("$proxyFile");
+    // Set proxy script URL
+    OA.setProxy("$proxyFile");
 
-	// Call init method
-	if(oneapi.init()) {
-		// Init sucessfull
-		oneapi.mlInit();
-	}
+    // Call init method
+    if(oneapi.init()) {
+        // Init sucessfull
+        oneapi.mlInit();
+    }
 </script>
 EOF;
 
-            
-        return $template;        
-    }
-    
-    
-    add_action( 'admin_menu', 'parseco_send_sms_menu' );
-    
-    parseco_send_sms_init();
-    add_shortcode( 'sendsms', 'parseco_send_sms');
-    
-    
 ?>
