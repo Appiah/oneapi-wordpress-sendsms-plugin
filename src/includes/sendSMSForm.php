@@ -3,27 +3,21 @@
 $template = <<<EOF
 
 <div class="fmmlPluginContainer">
-    <div style="display: none;" 
-         data-fmml-host="UserLoginData" 
-         data-fmml-username='$auth_username' 
-         data-fmml-password='$auth_password' 
-         data-fmml-run-on-success="parseco-plugin-content" 
-         data-fmml-login-on-run="true"
-         ></div>
-    <div data-fmml-host="CustomerProfile">
-        <div style="display: none;" data-fmml-observer="Display" data-fmml-attr-value-hidden="gsm">
+    <div id="parseco-plugin-content" data-fmml-host="CustomerProfile">
+        <div style="display: none;" data-fmml-observer="Display" data-fmml-attr-value-hidden="@this.D.getAttr('key','new') != 'new'">
             <p>$auth_error_message</p>
         </div>    
-        <div style="display: none;" data-fmml-observer="Display" data-fmml-attr-value-visible="gsm">
+        <div style="display: none;" data-fmml-observer="Display" data-fmml-attr-value-visible="@this.D.getAttr('key','new') != 'new'">
             <div data-fmml-host="SMSMessage">
                 <form>                
                     <ul class="clearfix">
                         <li>
                             <input id="sendtoaddress" 
                                    class="fmmlNumberInput" type="text" 
+                                   placeholder="GSM number"
                                    data-fmml-observer="Attribute" 
                                    data-fmml-attr-name="address"  
-                                   data-fmml-extensions="MlExAttributeEdit"
+                                   data-fmml-extensions="MlAttributeEdit"
                                    data-fmml-attr-default-value=""                    
                                    />
                         </li>
@@ -33,7 +27,8 @@ $template = <<<EOF
                                    data-fmml-observer="Event" 
                                    data-fmml-event-async="true" 
                                    data-fmml-event-type="onSendSMS" 
-                                   data-fmml-run-on-success="send-sms-query-ds"                      
+                                   data-fmml-run-on-success="hst-sms-err"                      
+                                   data-fmml-run-on-error="hst-sms-err"                      
                                    />
                         </li>
                     </ul>            
@@ -65,30 +60,30 @@ $template = <<<EOF
                 </form>            
             </div>
 
-            <div class="fmmlStatus" style="display: $showDeliveryStatus;" id="send-sms-query-ds" 
-                data-fmml-host="QuerySMSDeliveryStatus" data-fmml-run-on-init="false" 
-                data-fmml-interval="0"
-                data-fmml-info-message="$done_message"
-            >
-                <div class="fmmlStatus" data-fmml-observer="Attribute" 
-                data-fmml-attr-name="deliveryStatus"></div>
+            <div id="hst-sms-err" data-fmml-host="ApiErrors" data-fmml-run-on-init="false">
+                <div style="display: none;" class="fmmlStatus"
+                     data-fmml-observer="Display" 
+                    data-fmml-attr-value-visible="@this.D!=null && this.D.getSubClassName()=='GenericError' && this.D.getAttr('messageId','0') != '0'"
+                     >
+                    $error_message
+                </div>
+                <div style="display: none;" class="fmmlStatus"
+                     data-fmml-observer="Display" 
+                     data-fmml-attr-value-visible="@this.D!=null && this.D.getSubClassName()!='GenericError'"
+                     >
+                    $done_message
+                </div>
             </div>
+
         </div>
     </div>
 
 </div>
 <script>
-    // watermsrk
-    $("#sendtoaddress").watermark("$description");
-
-    // Set proxy script URL
-    OA.setProxy("$proxyFile");
-
-    // Call init method
-    if(oneapi.init()) {
-        // Init sucessfull
-        oneapi.mlInit();
-    }
+    var app = ib.AppSendSmsWpPlugin.startApp({
+        ibsso: "$ibsso"
+        });
+    if(app) app.mlInit();
 </script>
 EOF;
 
